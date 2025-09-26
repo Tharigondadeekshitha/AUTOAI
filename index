@@ -1,0 +1,535 @@
+3t2(a)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript Demo</title>
+  <style>
+    body {
+      font-family: Arial;
+      border: 2px solid black; /* border for the whole page */
+      padding: 10px;
+    }
+    h2 {
+      color: blue;
+    }
+</style>
+</head>
+<body>
+  <h2>JavaSc ript Example: Variables, Functions, and Objects</h2>
+  <p id="output"></p>
+
+  <script>
+    // Variable
+    let name = "Alice";
+    const a=10;
+
+    // Function
+    function sayHello(person) {
+      return "Hello, " + person + "!";
+    }
+
+    // Object
+    let car = {
+      brand: "Toyota",
+      model: "Corolla",
+      start: function() {
+        return "The car has started.";
+      }
+    };
+
+    // Display output on the page
+    let result = "";
+    result += "Name: " + name + "<br>";
+      result += "Number: " +a + "<br>";
+    result += sayHello(name) + "<br>";
+    result += "Car Brand: " + car.brand + "<br>";
+    result += car.start();
+
+    document.getElementById("output").innerHTML = result;
+  </script>
+</body>
+</html>
+
+
+2(B)
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple AJAX Form</title>
+  </head>
+  <body>
+    <h2>AJAX Form Example</h2>
+
+    <form id="myForm">
+      Name: <input type="text" name="name" required /><br />
+      Email: <input type="email" name="email" required /><br />
+      <button type="submit">Submit</button>
+    </form>
+
+    <h3>Contacts:</h3>
+    <ul id="list"></ul>
+
+    <script>
+      const form = document.getElementById("myForm");
+      const list = document.getElementById("list");
+      const API = "https://jsonplaceholder.typicode.com/users"; // mock server
+
+      // Load initial contacts
+      fetch(API)
+        .then((res) => res.json())
+        .then((users) => {
+          users.forEach((u) => {
+            list.innerHTML += `<li>${u.name} - ${u.email}</li>`;
+          });
+        });
+
+      // Submit form
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const data = Object.fromEntries(new FormData(form));
+
+        fetch(API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((created) => {
+            list.innerHTML += `<li>${created.name} - ${created.email}</li>`;
+            form.reset();
+          });
+      });
+    </script>
+  </body>
+</html>
+
+		
+			OR
+2(b)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple AJAX Form</title>
+</head>
+<body>
+  <h2>AJAX Form Example</h2>
+
+  <form id="myForm">
+    Name: <input type="text" name="name" required><br>
+    Email: <input type="email" name="email" required><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <h3>Contacts:</h3>
+  <ul id="list"></ul>
+
+  <script>
+    const form = document.getElementById("myForm");
+    const list = document.getElementById("list");
+    let contacts = []; // local storage for data
+
+    // Submit form
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+
+      // Store in local array
+      contacts.push(data);
+
+      // Display all contacts
+      list.innerHTML = "";
+      contacts.forEach(c => {
+        list.innerHTML += `<li>${c.name} - ${c.email}</li>`;
+      });
+
+      form.reset();
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+2(C)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Form Validation</title>
+  <style>
+    .error { color: red; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h2>Registration Form</h2>
+
+  <form id="regForm">
+    Name: <input id="name"><span class="error" id="nameErr"></span><br><br>
+    Email: <input id="email"><span class="error" id="emailErr"></span><br><br>
+    Phone: <input id="phone"><span class="error" id="phoneErr"></span><br><br>
+    Password: <input type="password" id="password"><span class="error" id="passwordErr"></span><br><br>
+    <button type="submit">Register</button>
+  </form>
+
+  <ul id="list"></ul>
+
+  <script>
+    const form = document.getElementById("regForm");
+    const list = document.getElementById("list");
+
+    form.addEventListener("submit", function(e){
+      e.preventDefault();
+
+      // Clear previous errors
+      document.getElementById("nameErr").textContent = "";
+      document.getElementById("emailErr").textContent = "";
+      document.getElementById("phoneErr").textContent = "";
+      document.getElementById("passwordErr").textContent = "";
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      let valid = true;
+
+      if(name === "") { document.getElementById("nameErr").textContent = " Name required"; valid = false; }
+      if(email === "") { document.getElementById("emailErr").textContent = " Email required"; valid = false; }
+      if(phone === "") { document.getElementById("phoneErr").textContent = " Phone required"; valid = false; }
+      if(password === "") { document.getElementById("passwordErr").textContent = " Password required"; valid = false; }
+
+      if(valid){
+        const li = document.createElement("li");
+        li.textContent = `Name: ${name}, Email: ${email}, Phone: ${phone}`;
+        list.appendChild(li);
+        form.reset();
+        alert("Form submitted successfully!");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+2(D)
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple jQuery UI</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+</head>
+<body>
+
+<h2>Demo</h2>
+
+<div id="tabs">
+  <ul>
+    <li><a href="#tab1">Tab 1</a></li>
+    <li><a href="#tab2">Tab 2</a></li>
+  </ul>
+  <div id="tab1">
+    <div id="slider"></div>
+    <button id="btn">Open Modal</button>
+  </div>
+  <div id="tab2">
+    <p>Tab 2 content</p>
+  </div>
+</div>
+
+<div id="modal" title="Modal" style="display:none;">
+  <p>This is a modal!</p>
+</div>
+
+<script>
+$(function(){
+  $("#tabs").tabs();
+  $("#slider").slider();
+  $("#btn").click(function(){ $("#modal").dialog(); });
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2(e)
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JSON Rendering</title>
+  </head>
+  <body>
+    <h1>Articles</h1>
+    <ul id="articles"></ul>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
+script.json
+fetch("data.json")
+  .then((res) => res.json())
+  .then((data) => {
+    const list = document.getElementById("articles");
+    list.innerHTML = data.articles
+      .map((a) => `<li><b>${a.title}</b>: ${a.summary}</li>`)
+      .join("");
+  })
+  .catch((err) => console.error("Error loading JSON:", err));
+
+
+Data.json
+{
+  "articles": [
+    {
+      "id": 1,
+      "title": "Intro to JavaScript",
+      "summary": "Learn variables and functions"
+    },
+    {
+      "id": 2,
+      "title": "AJAX Basics",
+      "summary": "How to fetch data from a server"
+    },
+    {
+      "id": 3,
+      "title": "jQuery UI",
+      "summary": "Build interactive UI elements"
+    }
+  ]
+}
+
+
+
+Vote check
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Voter Eligibility</title>
+</head>
+<body>
+  <script>
+    var age = prompt("Enter your age:");
+
+    if (age >= 18) {
+      alert("You are eligible to vote!");
+    } else {
+      alert("Sorry, you are not eligible to vote.");
+    }
+  </script>
+</body>
+</html>
+
+calculator operations
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple Calculator</title>
+</head>
+<body>
+<script>
+  var a = Number(prompt("Enter first number:"));
+  var b = Number(prompt("Enter second number:"));
+  var opt = prompt("Enter operator (+, -, *, /):");
+
+  if (opt === "+") {
+    alert(a + b);
+  } else if (opt === "-") {
+    alert(a - b);
+  } else if (opt === "*") {
+    alert(a * b);
+  } else if (opt === "/") {
+    alert(a / b);
+  } else {
+    alert("Invalid operator!");
+  }
+</script>
+</body>
+</html>
+
+
+library management system 
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Library Management</title>
+</head>
+<body>
+
+<h2>Library Management System</h2>
+
+Book Name: <input type="text" id="book"><br><br>
+Author: <input type="text" id="author"><br><br>
+<button onclick="addBook()">Add Book</button>
+
+<h3>Book List:</h3>
+<ul id="bookList"></ul>
+
+<script>
+var books = [];
+
+function addBook() {
+  var name = document.getElementById("book").value;
+  var author = document.getElementById("author").value;
+
+  if(name === "" || author === "") {
+    alert("Enter both book name and author!");
+    return;
+  }
+
+  books.push(name + " by " + author);
+
+  var list = document.getElementById("bookList");
+  list.innerHTML = "";
+  for(var i = 0; i < books.length; i++){
+    list.innerHTML += "<li>" + books[i] + "</li>";
+  }
+
+  // Clear input
+  document.getElementById("book").value = "";
+  document.getElementById("author").value = "";
+}
+</script>
+
+</body>
+</html>
+
+
+
+Fibanacci series
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Fibonacci Series</title>
+</head>
+<body>
+
+<script>
+var n = prompt("Enter number of terms:");
+var a = 0, b = 1;
+document.write(a + " " + b + " ");
+
+for(var i = 2; i < n; i++){
+  var c = a + b;
+  document.write(c + " ");
+  a = b;
+  b = c;
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Simple AJAX Form</title>
+</head>
+<body>
+  <h2>Simple AJAX Form Demo</h2>
+
+  <!-- Form -->
+  <form id="myForm">
+    Name: <input type="text" id="name" required><br>
+    Email: <input type="email" id="email" required><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Button to get server data -->
+  <button id="getServerData">Get From Mock Server</button>
+
+  <h3>Data (Local + Server):</h3>
+  <ul id="list"></ul>
+
+  <!-- Link external JS -->
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+const form = document.getElementById("myForm");
+const list = document.getElementById("list");
+const serverBtn = document.getElementById("getServerData");
+let contacts = [];
+
+// Handle local form submit
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+
+  contacts.push({ name, email });
+  renderList();
+  form.reset();
+});
+
+// Fetch data from mock server
+serverBtn.addEventListener("click", () => {
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then(res => res.json())
+    .then(users => {
+      // only use name and email
+      users.forEach(u => contacts.push({ name: u.name, email: u.email }));
+      renderList();
+    })
+    .catch(err => alert("Error fetching server data: " + err));
+});
+
+// Display contacts
+function renderList() {
+  list.innerHTML = "";
+  for (let c of contacts) {
+    list.innerHTML += `<li>${c.name} - ${c.email}</li>`;
+  }
+}
